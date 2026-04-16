@@ -1157,26 +1157,6 @@
 
         <form id="scorecard-form" class="card" novalidate>
 
-          <!-- Channel selector -->
-          <div class="form-section">
-            <h2 class="section-title">What channels do you use?</h2>
-            <p class="section-hint">Pick the channels you want to benchmark.</p>
-            <div class="channel-toggle" role="group" aria-label="Channel">
-              <button type="button" class="channel-btn" data-channel="phone">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                Phone
-              </button>
-              <button type="button" class="channel-btn" data-channel="email">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
-                Email
-              </button>
-              <button type="button" class="channel-btn active" data-channel="both">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/></svg>
-                Both
-              </button>
-            </div>
-          </div>
-
           <!-- Your Team -->
           <div class="form-section">
             <div class="section-label">Your team</div>
@@ -1210,6 +1190,25 @@
                   <span class="input-suffix">%</span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Channel selector -->
+          <div class="form-section">
+            <h2 class="section-title">What channels do you want to benchmark?</h2>
+            <div class="channel-toggle" role="group" aria-label="Channel">
+              <button type="button" class="channel-btn" data-channel="phone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                Phone
+              </button>
+              <button type="button" class="channel-btn" data-channel="email">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+                Email
+              </button>
+              <button type="button" class="channel-btn active" data-channel="both">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="M4 4l5 5"/></svg>
+                Both
+              </button>
             </div>
           </div>
 
