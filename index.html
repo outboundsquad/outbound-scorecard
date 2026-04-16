@@ -1959,7 +1959,44 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Clear error highlighting on input + enforce decimal rules
+    // ========================================
+    //  Persist form data in localStorage
+    // ========================================
+    const STORAGE_KEY = 'outbound_scorecard_data';
+    const formFieldIds = ['reps', 'acv', 'oppRate', 'winRate', 'phCalls', 'phConnects', 'phBooked', 'phHeld', 'emSent', 'emBooked', 'emOpen', 'emReply'];
+
+    function saveFormData() {
+      const data = {};
+      formFieldIds.forEach(id => {
+        const el = $('#' + id);
+        if (el && el.value) data[id] = el.value;
+      });
+      data.channel = state.channel;
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+    }
+
+    function restoreFormData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        formFieldIds.forEach(id => {
+          const el = $('#' + id);
+          if (el && data[id] !== undefined) el.value = data[id];
+        });
+        if (data.channel) {
+          state.channel = data.channel;
+          channelButtons.forEach(b => {
+            b.classList.toggle('active', b.dataset.channel === data.channel);
+          });
+          applyChannelVisibility();
+        }
+      } catch(e) {}
+    }
+
+    restoreFormData();
+
+    // Clear error highlighting on input + enforce decimal rules + save
     const wholeNumberFields = ['reps', 'phCalls', 'phConnects', 'phBooked', 'phHeld', 'emSent', 'emBooked'];
     const oneDecimalFields = ['oppRate', 'winRate', 'emOpen', 'emReply'];
 
@@ -1977,7 +2014,13 @@
             inp.value = parts[0] + '.' + parts[1].charAt(0);
           }
         }
+        saveFormData();
       });
+    });
+
+    // Also save when channel buttons are clicked
+    channelButtons.forEach(btn => {
+      btn.addEventListener('click', () => setTimeout(saveFormData, 50));
     });
   </script>
 </body>
