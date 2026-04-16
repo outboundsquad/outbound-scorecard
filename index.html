@@ -184,22 +184,17 @@
     }
 
     .section-label {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
+      display: block;
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
+      letter-spacing: -0.01em;
+      text-transform: none;
+      color: var(--navy);
       margin-bottom: 16px;
     }
 
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
+    .section-label .accent {
+      color: var(--orange);
     }
 
     .section-title {
@@ -261,6 +256,7 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 16px;
+      align-items: end;
     }
 
     @media (max-width: 600px) {
@@ -441,10 +437,10 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      font-size: clamp(20px, 3vw, 26px);
+      font-weight: 800;
+      text-transform: none;
+      letter-spacing: -0.02em;
       color: var(--navy);
       margin-bottom: 16px;
       padding-bottom: 10px;
@@ -452,8 +448,8 @@
     }
 
     .results-group-title svg {
-      width: 16px;
-      height: 16px;
+      width: 22px;
+      height: 22px;
       color: var(--blue);
     }
 
@@ -618,7 +614,31 @@
     /* Slider */
     .slider-wrap {
       position: relative;
-      padding: 6px 0 4px;
+      padding: 20px 0 4px;
+    }
+
+    .slider-avg-marker {
+      position: absolute;
+      top: 18px;
+      width: 2px;
+      height: 16px;
+      background: #6B7385;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 1;
+      border-radius: 1px;
+    }
+
+    .slider-avg-marker::after {
+      content: 'Avg';
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      font-weight: 600;
+      color: #6B7385;
+      letter-spacing: 0.02em;
     }
 
     input[type="range"].zone-slider {
@@ -1155,21 +1175,21 @@
               <div class="field">
                 <label for="reps">Number of outbound reps</label>
                 <div class="input-wrap">
-                  <input type="number" id="reps" min="1" step="1" placeholder="e.g. 8" value="10" required>
+                  <input type="number" id="reps" min="1" step="1" placeholder="e.g. 8" value="50" required>
                 </div>
               </div>
               <div class="field has-prefix">
                 <label for="acv">Average contract value (ACV)</label>
                 <div class="input-wrap">
                   <span class="input-prefix">$</span>
-                  <input type="number" id="acv" min="0" step="0.01" placeholder="e.g. 25000" value="35000" required>
+                  <input type="number" id="acv" min="0" step="0.01" placeholder="e.g. 25000" value="50000" required>
                 </div>
               </div>
               <div class="field has-suffix">
                 <label for="oppRate">Meeting → qualified opportunity rate</label>
                 <p class="field-hint">What percentage of first-time meetings advance to the next sales stage and become a qualified opportunity?</p>
                 <div class="input-wrap">
-                  <input type="number" id="oppRate" min="0" max="100" step="0.1" placeholder="e.g. 35" value="32" required>
+                  <input type="number" id="oppRate" min="0" max="100" step="0.1" placeholder="e.g. 35" value="18" required>
                   <span class="input-suffix">%</span>
                 </div>
               </div>
@@ -1186,31 +1206,31 @@
 
           <!-- Phone Metrics -->
           <div class="form-section" id="section-phone">
-            <div class="section-label">Phone metrics — last 90 days</div>
+            <div class="section-label">Phone metrics — <span class="accent">last 90 days</span></div>
             <div class="field-grid">
               <div class="field">
                 <label for="phCalls">Total outbound calls made</label>
                 <div class="input-wrap">
-                  <input type="number" id="phCalls" min="0" step="1" placeholder="e.g. 12000" value="15000">
+                  <input type="number" id="phCalls" min="0" step="1" placeholder="e.g. 12000" value="50000">
                 </div>
               </div>
               <div class="field">
                 <label for="phConnects">Total connects</label>
                 <p class="field-hint">How many calls made resulted in live pick-ups from the prospect?</p>
                 <div class="input-wrap">
-                  <input type="number" id="phConnects" min="0" step="1" placeholder="e.g. 600" value="375">
+                  <input type="number" id="phConnects" min="0" step="1" placeholder="e.g. 600" value="1750">
                 </div>
               </div>
               <div class="field">
                 <label for="phBooked">Meetings booked from calls</label>
                 <div class="input-wrap">
-                  <input type="number" id="phBooked" min="0" step="1" placeholder="e.g. 40" value="22">
+                  <input type="number" id="phBooked" min="0" step="1" placeholder="e.g. 40" value="79">
                 </div>
               </div>
               <div class="field">
                 <label for="phHeld">Meetings shown &amp; completed</label>
                 <div class="input-wrap">
-                  <input type="number" id="phHeld" min="0" step="1" placeholder="e.g. 24" value="10">
+                  <input type="number" id="phHeld" min="0" step="1" placeholder="e.g. 24" value="62">
                 </div>
               </div>
             </div>
@@ -1218,31 +1238,31 @@
 
           <!-- Email Metrics -->
           <div class="form-section" id="section-email">
-            <div class="section-label">Email metrics — last 90 days</div>
+            <div class="section-label">Email metrics — <span class="accent">last 90 days</span></div>
             <div class="field-grid">
               <div class="field">
                 <label for="emSent">Total outbound emails sent</label>
                 <div class="input-wrap">
-                  <input type="number" id="emSent" min="0" step="1" placeholder="e.g. 18000" value="20000">
+                  <input type="number" id="emSent" min="0" step="1" placeholder="e.g. 18000" value="108000">
                 </div>
               </div>
               <div class="field">
                 <label for="emBooked">Meetings booked from email</label>
                 <div class="input-wrap">
-                  <input type="number" id="emBooked" min="0" step="1" placeholder="e.g. 60" value="40">
+                  <input type="number" id="emBooked" min="0" step="1" placeholder="e.g. 60" value="555">
                 </div>
               </div>
               <div class="field has-suffix">
                 <label for="emOpen">Open rate</label>
                 <div class="input-wrap">
-                  <input type="number" id="emOpen" min="0" max="100" step="0.1" placeholder="e.g. 30">
+                  <input type="number" id="emOpen" min="0" max="100" step="0.1" placeholder="e.g. 30" value="25">
                   <span class="input-suffix">%</span>
                 </div>
               </div>
               <div class="field has-suffix">
                 <label for="emReply">Reply rate</label>
                 <div class="input-wrap">
-                  <input type="number" id="emReply" min="0" max="100" step="0.1" placeholder="e.g. 2">
+                  <input type="number" id="emReply" min="0" max="100" step="0.1" placeholder="e.g. 2" value="0.7">
                   <span class="input-suffix">%</span>
                 </div>
               </div>
@@ -1277,6 +1297,15 @@
           <!-- LEFT: Scorecard results -->
           <div class="results-left">
             <div class="card">
+              <!-- Overall results -->
+              <div class="results-group" id="results-overall">
+                <div class="results-group-title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                  Overall Performance
+                </div>
+                <div id="overall-metrics"></div>
+              </div>
+
               <!-- Phone results -->
               <div class="results-group" id="results-phone" data-hide>
                 <div class="results-group-title">
@@ -1299,7 +1328,7 @@
 
             <!-- Total Revenue Opportunity (lives outside the card, but inside results-left) -->
             <div class="total-opportunity" id="total-opportunity">
-              <div class="total-opportunity-label">Your Total Revenue Opportunity</div>
+              <div class="total-opportunity-label">Your Total Revenue Opportunity (Per Quarter)</div>
               <div class="total-opportunity-value" id="total-opportunity-value">$0</div>
               <div class="total-opportunity-stats" id="total-opportunity-stats">
                 <span class="total-opportunity-empty">Move any slider above your current value to see the impact.</span>
@@ -1353,7 +1382,9 @@
       // Email
       openRate:           { avg: 27.30, redMax: 25.0, greenMin: 46.5,  label: 'Open Rate' },
       replyRate:          { avg: 1.90,  redMax: 1.0,  greenMin: 3.5,   label: 'Reply Rate' },
-      emailToMeetingRate: { avg: 0.50,  redMax: 0.3,  greenMin: 1.5,   label: 'Email → Meeting Rate' }
+      emailToMeetingRate: { avg: 0.50,  redMax: 0.3,  greenMin: 1.5,   label: 'Email → Meeting Rate' },
+      // Overall
+      introToOppRate:     { avg: 22.50, redMax: 10.0, greenMin: 33.0,  label: 'Intro Call → Qualified Opp' }
     };
 
     const EMAIL_ASSUMED_SHOW_RATE = 0.569; // industry-average show rate, used for email revenue projection
@@ -1486,6 +1517,7 @@
             </div>
           </div>
           <div class="slider-wrap">
+            <div class="slider-avg-marker" style="left: ${Math.min(100, Math.max(0, (bench.avg / max) * 100)).toFixed(2)}%;" aria-hidden="true"></div>
             <input
               type="range"
               class="zone-slider"
@@ -1543,8 +1575,8 @@
       }
       parts.push(`<div class="delta-item"><span class="delta-label">+ Meetings Completed</span><span class="delta-value">+${fmtNum(d.held).toLocaleString()}</span></div>`);
       parts.push(`<div class="delta-item"><span class="delta-label">+ Qualified Opps</span><span class="delta-value">+${fmtNum(d.opps, 1).toLocaleString()}</span></div>`);
-      parts.push(`<div class="delta-item"><span class="delta-label">+ Pipeline</span><span class="delta-value">+${fmtMoney(d.pipeline)}</span></div>`);
-      parts.push(`<div class="delta-item revenue"><span class="delta-label">+ Closed/Won Revenue</span><span class="delta-value">+${fmtMoney(d.revenue)}</span></div>`);
+      parts.push(`<div class="delta-item"><span class="delta-label">+ Pipeline (per quarter)</span><span class="delta-value">+${fmtMoney(d.pipeline)}</span></div>`);
+      parts.push(`<div class="delta-item revenue"><span class="delta-label">+ Closed/Won Revenue (per quarter)</span><span class="delta-value">+${fmtMoney(d.revenue)}</span></div>`);
 
       deltaEl.innerHTML = `<div class="delta-grid">${parts.join('')}</div>`;
 
@@ -1576,7 +1608,8 @@
       statsEl.innerHTML = `
         <strong>+${fmtNum(meetings).toLocaleString()}</strong> meetings set ·
         <strong>+${fmtNum(opps, 1).toLocaleString()}</strong> qualified opps ·
-        <strong>+${fmtMoney(pipeline)}</strong> pipeline per quarter
+        <strong>+${fmtMoney(pipeline)}</strong> pipeline<br>
+        <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); font-weight: 600;">Per Quarter</span>
       `;
     }
 
@@ -1674,6 +1707,36 @@
       // Reset slider registry + hint state
       sliderRegistry.length = 0;
       hintFaded = false;
+
+      // Calculate total meetings held across channels (for Overall section)
+      const phHeldVal = usePhone ? num('phHeld') : 0;
+      const emBookedVal = useEmail ? num('emBooked') : 0;
+      const emailHeld = emBookedVal * EMAIL_ASSUMED_SHOW_RATE;
+      const totalMeetingsHeld = phHeldVal + emailHeld;
+
+      // ----- OVERALL -----
+      const overallMetricsEl = $('#overall-metrics');
+      const introToOppCurrent = num('oppRate'); // the oppRate the user entered, as a percent
+      const overallConfigs = [
+        {
+          id: 'introToOppRate',
+          name: 'Intro Call → Qualified Opp Conversion Rate',
+          sub: 'Percent of completed intro meetings that become qualified opportunities',
+          bench: BENCHMARKS.introToOppRate,
+          currentRate: introToOppCurrent,
+          max: 50,
+          showHint: true,
+          computeDelta(newRatePct) {
+            const delta = (newRatePct - introToOppCurrent) / 100;
+            const addOpps = totalMeetingsHeld * delta;
+            const addPipeline = addOpps * acv;
+            const addRevenue = addOpps * winRate * acv;
+            return { meetings: 0, held: 0, opps: addOpps, pipeline: addPipeline, revenue: addRevenue };
+          }
+        }
+      ];
+      overallMetricsEl.innerHTML = overallConfigs.map(renderSliderCard).join('');
+      overallConfigs.forEach(c => { c.currentDelta = null; sliderRegistry.push(c); });
 
       // ----- PHONE -----
       const phoneGroupEl = $('#results-phone');
