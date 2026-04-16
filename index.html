@@ -93,7 +93,7 @@
     }
 
     .container.wide {
-      max-width: 1200px;
+      max-width: 1320px;
     }
 
     .page {
@@ -1022,7 +1022,7 @@
     /* Two-column results layout */
     .results-layout {
       display: grid;
-      grid-template-columns: 1fr 420px;
+      grid-template-columns: 1fr 520px;
       gap: 32px;
       align-items: start;
     }
@@ -1041,9 +1041,13 @@
       min-width: 0;
     }
 
+    .total-opportunity-sidebar {
+      margin-bottom: 20px;
+      border-radius: 18px;
+    }
+
     .cta-sticky {
-      position: sticky;
-      top: 24px;
+      position: static;
     }
 
     @media (max-width: 1024px) {
@@ -1343,8 +1347,15 @@
             </div>
           </div>
 
-          <!-- RIGHT: Book a call -->
+          <!-- RIGHT: Missed revenue + Book a call -->
           <div class="results-right">
+            <div class="total-opportunity total-opportunity-sidebar" id="total-opportunity-sidebar">
+              <div class="total-opportunity-label">Your Total Missed Revenue Opportunity (Per Quarter)</div>
+              <div class="total-opportunity-value" id="total-opportunity-value-sidebar">$0</div>
+              <div class="total-opportunity-stats" id="total-opportunity-stats-sidebar">
+                <span class="total-opportunity-empty">Move any slider above your current value to see the impact.</span>
+              </div>
+            </div>
             <div class="cta-section cta-sticky">
               <h3>Let's fix this together</h3>
               <p class="cta-sub">Book a 30-minute call to review your results and build a custom action plan for your team.</p>
@@ -1597,20 +1608,26 @@
         pipeline += (d.pipeline || 0);
         revenue += (d.revenue || 0);
       });
-      const valEl = $('#total-opportunity-value');
-      const statsEl = $('#total-opportunity-stats');
-      if (!anyMoved) {
-        valEl.textContent = '$0';
-        statsEl.innerHTML = `<span class="total-opportunity-empty">Move any slider above your current value to see the impact.</span>`;
-        return;
-      }
-      valEl.textContent = `+${fmtMoney(revenue)}`;
-      statsEl.innerHTML = `
-        <strong>+${fmtNum(meetings).toLocaleString()}</strong> meetings set ·
-        <strong>+${fmtNum(opps, 1).toLocaleString()}</strong> qualified opps ·
-        <strong>+${fmtMoney(pipeline)}</strong> pipeline<br>
-        <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); font-weight: 600;">Per Quarter</span>
-      `;
+      // Update both the left-side total and the right-side sidebar total
+      const targets = [
+        { val: $('#total-opportunity-value'), stats: $('#total-opportunity-stats') },
+        { val: $('#total-opportunity-value-sidebar'), stats: $('#total-opportunity-stats-sidebar') }
+      ];
+      targets.forEach(({ val: valEl, stats: statsEl }) => {
+        if (!valEl || !statsEl) return;
+        if (!anyMoved) {
+          valEl.textContent = '$0';
+          statsEl.innerHTML = `<span class="total-opportunity-empty">Move any slider above your current value to see the impact.</span>`;
+          return;
+        }
+        valEl.textContent = fmtMoney(revenue);
+        statsEl.innerHTML = `
+          <strong>+${fmtNum(meetings).toLocaleString()}</strong> meetings set ·
+          <strong>+${fmtNum(opps, 1).toLocaleString()}</strong> qualified opps ·
+          <strong>+${fmtMoney(pipeline)}</strong> pipeline<br>
+          <span style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); font-weight: 600;">Per Quarter</span>
+        `;
+      });
     }
 
     // Wire up a slider after it's been inserted into the DOM
