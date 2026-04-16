@@ -572,6 +572,299 @@
     .gauge-labels span:last-child { text-align: right; }
 
     /* ========================================
+       Interactive Metric Card (slider-based)
+       ======================================== */
+    .metric-card {
+      padding: 22px 0 26px;
+      border-bottom: 1px solid #F0F3F8;
+    }
+
+    .metric-card:last-child { border-bottom: none; }
+
+    .metric-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .metric-card-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+    }
+
+    .metric-card-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .metric-card-value-block {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .metric-card-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.015em;
+      line-height: 1;
+    }
+
+    /* Slider */
+    .slider-wrap {
+      position: relative;
+      padding: 6px 0 4px;
+    }
+
+    input[type="range"].zone-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: #E4E8F0;
+      outline: none;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+    }
+
+    input[type="range"].zone-slider:focus {
+      outline: none;
+    }
+
+    /* WebKit thumb */
+    input[type="range"].zone-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 3px solid var(--navy);
+      box-shadow: 0 2px 8px rgba(27, 34, 53, 0.25);
+      cursor: grab;
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+    input[type="range"].zone-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.12);
+      box-shadow: 0 3px 12px rgba(27, 34, 53, 0.35);
+    }
+
+    input[type="range"].zone-slider:active::-webkit-slider-thumb {
+      cursor: grabbing;
+      transform: scale(1.18);
+    }
+
+    /* Firefox thumb */
+    input[type="range"].zone-slider::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 3px solid var(--navy);
+      box-shadow: 0 2px 8px rgba(27, 34, 53, 0.25);
+      cursor: grab;
+      transition: transform 0.15s ease;
+    }
+
+    input[type="range"].zone-slider::-moz-range-thumb:hover {
+      transform: scale(1.12);
+    }
+
+    input[type="range"].zone-slider::-moz-range-track {
+      height: 12px;
+      border-radius: 999px;
+      background: transparent;
+    }
+
+    .slider-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .slider-labels .projected {
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    .slider-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--blue);
+      margin-top: 8px;
+      letter-spacing: 0.01em;
+      transition: opacity 0.4s ease;
+    }
+
+    .slider-hint.faded {
+      opacity: 0;
+      pointer-events: none;
+      height: 0;
+      margin-top: 0;
+      overflow: hidden;
+    }
+
+    .slider-hint .arrow {
+      display: inline-block;
+      animation: bounceRight 1.4s ease-in-out infinite;
+    }
+
+    @keyframes bounceRight {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(5px); }
+    }
+
+    .slider-zone-ticks {
+      position: relative;
+      height: 8px;
+      margin-top: 4px;
+      pointer-events: none;
+    }
+
+    .slider-zone-ticks .tick {
+      position: absolute;
+      top: 0;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--muted);
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+    /* Delta panel */
+    .delta-panel {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FAFCFE 100%);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--orange);
+      border-radius: 10px;
+      transition: opacity 0.25s ease;
+    }
+
+    .delta-panel.empty {
+      border-left-color: var(--border);
+      background: #F7F9FC;
+    }
+
+    .delta-empty-msg {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      text-align: center;
+      padding: 4px 0;
+    }
+
+    .delta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px 14px;
+    }
+
+    @media (max-width: 600px) {
+      .delta-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .delta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .delta-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    .delta-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+    }
+
+    .delta-item.revenue .delta-value {
+      color: var(--orange);
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .informational-note {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: #F4F8FD;
+      border-radius: 8px;
+      font-size: 12.5px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* Total opportunity box */
+    .total-opportunity {
+      margin-top: 28px;
+      padding: 26px 24px;
+      background: linear-gradient(135deg, var(--navy) 0%, #2A334D 100%);
+      color: var(--white);
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .total-opportunity-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.72);
+      margin-bottom: 8px;
+    }
+
+    .total-opportunity-value {
+      font-size: clamp(34px, 5.5vw, 52px);
+      font-weight: 800;
+      color: var(--orange);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .total-opportunity-stats {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.82);
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .total-opportunity-stats strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .total-opportunity-empty {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* ========================================
        Revenue Impact
        ======================================== */
     .impact-section {
@@ -1002,20 +1295,14 @@
                 <div id="email-metrics"></div>
               </div>
 
-              <!-- Revenue Impact -->
-              <div class="impact-section" id="impact-section">
-                <h3 class="impact-title">Your revenue opportunity</h3>
-                <p class="impact-subtitle">If you closed the gaps below to the average benchmark, here's what it would mean for your pipeline.</p>
-                <div id="impact-cards"></div>
-                <div class="impact-total" id="impact-total" data-hide>
-                  <div class="impact-total-label">Total Quarterly Revenue Opportunity</div>
-                  <div class="impact-total-value" id="impact-total-value">$0</div>
-                  <div class="impact-total-sub">Based on closing the gap to the average on every below-average metric.</div>
-                </div>
-                <div class="all-green" id="all-green" data-hide>
-                  <div class="all-green-title">You're at or above average on every metric. 🎯</div>
-                  <div class="all-green-sub">Let's talk about what it would take to push into top-performer territory.</div>
-                </div>
+            </div>
+
+            <!-- Total Revenue Opportunity (lives outside the card, but inside results-left) -->
+            <div class="total-opportunity" id="total-opportunity">
+              <div class="total-opportunity-label">Your Total Revenue Opportunity</div>
+              <div class="total-opportunity-value" id="total-opportunity-value">$0</div>
+              <div class="total-opportunity-stats" id="total-opportunity-stats">
+                <span class="total-opportunity-empty">Move any slider above your current value to see the impact.</span>
               </div>
             </div>
 
@@ -1146,33 +1433,170 @@
     }
 
     // ========================================
-    //  Build metric row
+    //  Build zone-gradient for slider track
     // ========================================
-    function metricRow({ name, sub, value, bench, valueDisplay }) {
-      const status = statusFor(value, bench);
-      const pos = gaugePosition(value, bench.redMax, bench.greenMin);
+    function buildZoneGradient(max, redMax, greenMin) {
+      // Map percent values to positions along 0-max, expressed as % of the slider width.
+      const redPct = Math.min(100, (redMax / max) * 100);
+      const greenPct = Math.min(100, (greenMin / max) * 100);
+      // Use hard stops so zones are crisp
+      return `linear-gradient(90deg, var(--red) 0%, var(--red) ${redPct}%, var(--yellow) ${redPct}%, var(--yellow) ${greenPct}%, var(--green) ${greenPct}%, var(--green) 100%)`;
+    }
+
+    // ========================================
+    //  Slider-based metric card
+    // ========================================
+    // Registry of slider configs -> used by the running total
+    const sliderRegistry = [];
+    let hintFaded = false;
+
+    /**
+     * config: {
+     *   id, name, sub, bench, currentRate (percent), max (percent),
+     *   informational (bool) — if true, no delta panel, just gauge + label
+     *   computeDelta(newRate) -> {meetings, held, opps, pipeline, revenue, connects?}
+     * }
+     */
+    function renderSliderCard(config) {
+      const { id, name, sub, bench, currentRate, max, informational, showHint } = config;
+      const status = statusFor(currentRate, bench);
+      const gradient = buildZoneGradient(max, bench.redMax, bench.greenMin);
+      const startVal = Math.min(currentRate, max);
+
+      const hintHtml = showHint && !informational
+        ? `<div class="slider-hint" data-slider-hint><span>Drag to explore your upside</span> <span class="arrow">→</span></div>`
+        : '';
+
+      const deltaHtml = informational
+        ? `<div class="informational-note">Informational benchmark — doesn't directly drive the revenue model.</div>`
+        : `<div class="delta-panel empty" data-delta="${id}">
+             <div class="delta-empty-msg">Move the slider to see the impact.</div>
+           </div>`;
+
       return `
-        <div class="metric">
-          <div class="metric-head">
+        <div class="metric-card" data-metric="${id}">
+          <div class="metric-card-head">
             <div>
-              <div class="metric-name">${name}</div>
-              <div class="metric-sub">${sub}</div>
+              <div class="metric-card-name">${name}</div>
+              <div class="metric-card-sub">${sub}</div>
             </div>
-            <div class="metric-value-block">
-              <div class="metric-value">${valueDisplay || fmtPct(value)}</div>
+            <div class="metric-card-value-block">
+              <div class="metric-card-value" data-current-value>${fmtPct(currentRate)}</div>
               <span class="metric-status status-${status}">${statusLabel(status)}</span>
             </div>
           </div>
-          <div class="gauge" data-pos="${pos}">
-            <div class="gauge-marker"></div>
+          <div class="slider-wrap">
+            <input
+              type="range"
+              class="zone-slider"
+              data-slider="${id}"
+              min="0"
+              max="${max}"
+              step="0.1"
+              value="${startVal.toFixed(2)}"
+              style="background: ${gradient};"
+              aria-label="${name} slider"
+            />
+            <div class="slider-labels">
+              <span>Your current: <strong>${fmtPct(currentRate)}</strong></span>
+              <span class="projected">Projected: <span data-projected>${fmtPct(currentRate)}</span></span>
+            </div>
+            ${hintHtml}
           </div>
-          <div class="gauge-labels">
-            <span>Below avg &lt;${bench.redMax}%</span>
-            <span>Avg ${bench.avg}%</span>
-            <span>Top ${bench.greenMin}%+</span>
-          </div>
+          ${deltaHtml}
         </div>
       `;
+    }
+
+    // Update the delta panel for a given slider based on its current value
+    function updateSliderDelta(id) {
+      const slider = document.querySelector(`[data-slider="${id}"]`);
+      if (!slider) return;
+      const card = slider.closest('.metric-card');
+      const projectedEl = card.querySelector('[data-projected]');
+      const deltaEl = card.querySelector(`[data-delta="${id}"]`);
+      const newRate = parseFloat(slider.value);
+      projectedEl.textContent = fmtPct(newRate);
+
+      const entry = sliderRegistry.find(s => s.id === id);
+      if (!entry || entry.informational) return;
+
+      // If value is at or below current rate (no positive delta) -> empty state
+      if (newRate <= entry.currentRate + 0.001) {
+        deltaEl.classList.add('empty');
+        deltaEl.innerHTML = `<div class="delta-empty-msg">Move the slider to see the impact.</div>`;
+        entry.currentDelta = { meetings: 0, held: 0, opps: 0, pipeline: 0, revenue: 0 };
+        updateTotalOpportunity();
+        return;
+      }
+
+      const d = entry.computeDelta(newRate);
+      entry.currentDelta = d;
+      deltaEl.classList.remove('empty');
+
+      const parts = [];
+      if (typeof d.connects === 'number' && d.connects > 0) {
+        parts.push(`<div class="delta-item"><span class="delta-label">+ Connects</span><span class="delta-value">+${fmtNum(d.connects).toLocaleString()}</span></div>`);
+      }
+      if (d.meetings > 0) {
+        parts.push(`<div class="delta-item"><span class="delta-label">+ Meetings Set</span><span class="delta-value">+${fmtNum(d.meetings).toLocaleString()}</span></div>`);
+      }
+      parts.push(`<div class="delta-item"><span class="delta-label">+ Meetings Completed</span><span class="delta-value">+${fmtNum(d.held).toLocaleString()}</span></div>`);
+      parts.push(`<div class="delta-item"><span class="delta-label">+ Qualified Opps</span><span class="delta-value">+${fmtNum(d.opps, 1).toLocaleString()}</span></div>`);
+      parts.push(`<div class="delta-item"><span class="delta-label">+ Pipeline</span><span class="delta-value">+${fmtMoney(d.pipeline)}</span></div>`);
+      parts.push(`<div class="delta-item revenue"><span class="delta-label">+ Closed/Won Revenue</span><span class="delta-value">+${fmtMoney(d.revenue)}</span></div>`);
+
+      deltaEl.innerHTML = `<div class="delta-grid">${parts.join('')}</div>`;
+
+      updateTotalOpportunity();
+    }
+
+    function updateTotalOpportunity() {
+      let meetings = 0, opps = 0, pipeline = 0, revenue = 0;
+      let anyMoved = false;
+      sliderRegistry.forEach(s => {
+        if (s.informational) return;
+        const d = s.currentDelta;
+        if (!d) return;
+        if (d.revenue > 0 || d.pipeline > 0 || d.meetings > 0 || d.held > 0) anyMoved = true;
+        meetings += (d.meetings || 0);
+        // We'll also aggregate held + opps for summary
+        opps += (d.opps || 0);
+        pipeline += (d.pipeline || 0);
+        revenue += (d.revenue || 0);
+      });
+      const valEl = $('#total-opportunity-value');
+      const statsEl = $('#total-opportunity-stats');
+      if (!anyMoved) {
+        valEl.textContent = '$0';
+        statsEl.innerHTML = `<span class="total-opportunity-empty">Move any slider above your current value to see the impact.</span>`;
+        return;
+      }
+      valEl.textContent = `+${fmtMoney(revenue)}`;
+      statsEl.innerHTML = `
+        <strong>+${fmtNum(meetings).toLocaleString()}</strong> meetings set ·
+        <strong>+${fmtNum(opps, 1).toLocaleString()}</strong> qualified opps ·
+        <strong>+${fmtMoney(pipeline)}</strong> pipeline per quarter
+      `;
+    }
+
+    // Wire up a slider after it's been inserted into the DOM
+    function wireSlider(id) {
+      const slider = document.querySelector(`[data-slider="${id}"]`);
+      if (!slider) return;
+      const fadeHint = () => {
+        if (hintFaded) return;
+        hintFaded = true;
+        document.querySelectorAll('[data-slider-hint]').forEach(h => h.classList.add('faded'));
+      };
+      slider.addEventListener('input', () => {
+        updateSliderDelta(id);
+        fadeHint();
+      });
+      slider.addEventListener('change', () => {
+        updateSliderDelta(id);
+        fadeHint();
+      });
     }
 
     // ========================================
@@ -1247,8 +1671,9 @@
       const usePhone = state.channel === 'phone' || state.channel === 'both';
       const useEmail = state.channel === 'email' || state.channel === 'both';
 
-      const impacts = []; // for revenue gap calculations
-      let totalRevGap = 0;
+      // Reset slider registry + hint state
+      sliderRegistry.length = 0;
+      hintFaded = false;
 
       // ----- PHONE -----
       const phoneGroupEl = $('#results-phone');
@@ -1265,97 +1690,67 @@
         const connectToBook = connects > 0 ? (booked / connects) * 100 : 0;
         const showRate = booked > 0 ? (held / booked) * 100 : 0;
 
-        let html = '';
-        html += metricRow({
-          name: 'Connect Rate',
-          sub: `${connects.toLocaleString()} connects / ${calls.toLocaleString()} calls`,
-          value: connectRate,
-          bench: BENCHMARKS.connectRate
-        });
-        html += metricRow({
-          name: 'Connect → Meeting Booked',
-          sub: `${booked.toLocaleString()} booked / ${connects.toLocaleString()} connects`,
-          value: connectToBook,
-          bench: BENCHMARKS.connectToBookRate
-        });
-        html += metricRow({
-          name: 'Show Rate',
-          sub: `${held.toLocaleString()} held / ${booked.toLocaleString()} booked`,
-          value: showRate,
-          bench: BENCHMARKS.showRate
-        });
-        phoneMetricsEl.innerHTML = html;
-
-        // ---- Phone revenue gaps ----
-        // Use their own connect-to-book + show rates (decimals) for downstream math
+        // Use current rates (decimals) for downstream cascades
         const ctbDec = connectToBook / 100;
         const showDec = showRate / 100;
 
-        // 1) Connect rate gap
-        if (connectRate < BENCHMARKS.connectRate.redMax) {
-          const targetDec = BENCHMARKS.connectRate.avg / 100;
-          const currentDec = connectRate / 100;
-          const addConnects = (targetDec - currentDec) * calls;
-          const addMeetings = addConnects * ctbDec;
-          const addHeld = addMeetings * showDec;
-          const addOpps = addHeld * oppRate;
-          const addDeals = addOpps * winRate;
-          const revenue = addDeals * acv;
-          impacts.push({
-            metric: 'connect rate',
-            from: fmtPct(connectRate),
-            to: fmtPct(BENCHMARKS.connectRate.avg),
-            meetings: addMeetings,
-            held: addHeld,
-            opps: addOpps,
-            deals: addDeals,
-            revenue
-          });
-          totalRevGap += revenue;
-        }
+        const phoneConfigs = [
+          {
+            id: 'connectRate',
+            name: 'Connect Rate',
+            sub: `${connects.toLocaleString()} connects / ${calls.toLocaleString()} calls`,
+            bench: BENCHMARKS.connectRate,
+            currentRate: connectRate,
+            max: 20,
+            showHint: true,
+            computeDelta(newRatePct) {
+              const delta = (newRatePct - connectRate) / 100;
+              const addConnects = delta * calls;
+              const addMeetings = addConnects * ctbDec;
+              const addHeld = addMeetings * showDec;
+              const addOpps = addHeld * oppRate;
+              const addPipeline = addOpps * acv;
+              const addRevenue = addOpps * winRate * acv;
+              return { connects: addConnects, meetings: addMeetings, held: addHeld, opps: addOpps, pipeline: addPipeline, revenue: addRevenue };
+            }
+          },
+          {
+            id: 'connectToBookRate',
+            name: 'Connect → Meeting Booked',
+            sub: `${booked.toLocaleString()} booked / ${connects.toLocaleString()} connects`,
+            bench: BENCHMARKS.connectToBookRate,
+            currentRate: connectToBook,
+            max: 25,
+            computeDelta(newRatePct) {
+              const delta = (newRatePct - connectToBook) / 100;
+              const addMeetings = delta * connects;
+              const addHeld = addMeetings * showDec;
+              const addOpps = addHeld * oppRate;
+              const addPipeline = addOpps * acv;
+              const addRevenue = addOpps * winRate * acv;
+              return { meetings: addMeetings, held: addHeld, opps: addOpps, pipeline: addPipeline, revenue: addRevenue };
+            }
+          },
+          {
+            id: 'showRate',
+            name: 'Show Rate',
+            sub: `${held.toLocaleString()} completed / ${booked.toLocaleString()} booked`,
+            bench: BENCHMARKS.showRate,
+            currentRate: showRate,
+            max: 100,
+            computeDelta(newRatePct) {
+              const delta = (newRatePct - showRate) / 100;
+              const addHeld = delta * booked;
+              const addOpps = addHeld * oppRate;
+              const addPipeline = addOpps * acv;
+              const addRevenue = addOpps * winRate * acv;
+              return { meetings: 0, held: addHeld, opps: addOpps, pipeline: addPipeline, revenue: addRevenue };
+            }
+          }
+        ];
 
-        // 2) Connect-to-book gap
-        if (connectToBook < BENCHMARKS.connectToBookRate.redMax) {
-          const targetDec = BENCHMARKS.connectToBookRate.avg / 100;
-          const currentDec = connectToBook / 100;
-          const addMeetings = (targetDec - currentDec) * connects;
-          const addHeld = addMeetings * showDec;
-          const addOpps = addHeld * oppRate;
-          const addDeals = addOpps * winRate;
-          const revenue = addDeals * acv;
-          impacts.push({
-            metric: 'connect-to-meeting rate',
-            from: fmtPct(connectToBook),
-            to: fmtPct(BENCHMARKS.connectToBookRate.avg),
-            meetings: addMeetings,
-            held: addHeld,
-            opps: addOpps,
-            deals: addDeals,
-            revenue
-          });
-          totalRevGap += revenue;
-        }
-
-        // 3) Show rate gap
-        if (showRate < BENCHMARKS.showRate.redMax) {
-          const targetDec = BENCHMARKS.showRate.avg / 100;
-          const currentDec = showRate / 100;
-          const addHeld = (targetDec - currentDec) * booked;
-          const addOpps = addHeld * oppRate;
-          const addDeals = addOpps * winRate;
-          const revenue = addDeals * acv;
-          impacts.push({
-            metric: 'show rate',
-            from: fmtPct(showRate),
-            to: fmtPct(BENCHMARKS.showRate.avg),
-            meetings: 0,
-            held: addHeld,
-            opps: addOpps,
-            deals: addDeals,
-            revenue
-          });
-          totalRevGap += revenue;
-        }
+        phoneMetricsEl.innerHTML = phoneConfigs.map(renderSliderCard).join('');
+        phoneConfigs.forEach(c => { c.currentDelta = null; sliderRegistry.push(c); });
       } else {
         phoneGroupEl.setAttribute('data-hide', '');
       }
@@ -1372,92 +1767,54 @@
         const replyRate = num('emReply');
         const emToMeeting = sent > 0 ? (emBooked / sent) * 100 : 0;
 
-        let html = '';
-        html += metricRow({
-          name: 'Open Rate',
-          sub: 'Percent of emails opened',
-          value: openRate,
-          bench: BENCHMARKS.openRate
-        });
-        html += metricRow({
-          name: 'Reply Rate',
-          sub: 'Percent of emails that get a reply',
-          value: replyRate,
-          bench: BENCHMARKS.replyRate
-        });
-        html += metricRow({
-          name: 'Email → Meeting Rate',
-          sub: `${emBooked.toLocaleString()} meetings / ${sent.toLocaleString()} emails`,
-          value: emToMeeting,
-          bench: BENCHMARKS.emailToMeetingRate
-        });
-        emailMetricsEl.innerHTML = html;
+        const hasPhoneShown = usePhone;
+        const emailConfigs = [
+          {
+            id: 'openRate',
+            name: 'Open Rate',
+            sub: 'Percent of emails opened',
+            bench: BENCHMARKS.openRate,
+            currentRate: openRate,
+            max: 60,
+            informational: true,
+            showHint: !hasPhoneShown
+          },
+          {
+            id: 'replyRate',
+            name: 'Reply Rate',
+            sub: 'Percent of emails that get a reply',
+            bench: BENCHMARKS.replyRate,
+            currentRate: replyRate,
+            max: 8,
+            informational: true
+          },
+          {
+            id: 'emailToMeetingRate',
+            name: 'Email → Meeting Rate',
+            sub: `${emBooked.toLocaleString()} meetings / ${sent.toLocaleString()} emails`,
+            bench: BENCHMARKS.emailToMeetingRate,
+            currentRate: emToMeeting,
+            max: 3,
+            computeDelta(newRatePct) {
+              const delta = (newRatePct - emToMeeting) / 100;
+              const addMeetings = delta * sent;
+              const addHeld = addMeetings * EMAIL_ASSUMED_SHOW_RATE;
+              const addOpps = addHeld * oppRate;
+              const addPipeline = addOpps * acv;
+              const addRevenue = addOpps * winRate * acv;
+              return { meetings: addMeetings, held: addHeld, opps: addOpps, pipeline: addPipeline, revenue: addRevenue };
+            }
+          }
+        ];
 
-        // ---- Email revenue gap (only the email-to-meeting metric drives revenue) ----
-        if (emToMeeting < BENCHMARKS.emailToMeetingRate.redMax) {
-          const targetDec = BENCHMARKS.emailToMeetingRate.avg / 100;
-          const currentDec = emToMeeting / 100;
-          const addMeetings = (targetDec - currentDec) * sent;
-          const addHeld = addMeetings * EMAIL_ASSUMED_SHOW_RATE;
-          const addOpps = addHeld * oppRate;
-          const addDeals = addOpps * winRate;
-          const revenue = addDeals * acv;
-          impacts.push({
-            metric: 'email-to-meeting rate',
-            from: fmtPct(emToMeeting),
-            to: fmtPct(BENCHMARKS.emailToMeetingRate.avg),
-            meetings: addMeetings,
-            held: addHeld,
-            opps: addOpps,
-            deals: addDeals,
-            revenue
-          });
-          totalRevGap += revenue;
-        }
+        emailMetricsEl.innerHTML = emailConfigs.map(renderSliderCard).join('');
+        emailConfigs.forEach(c => { c.currentDelta = null; sliderRegistry.push(c); });
       } else {
         emailGroupEl.setAttribute('data-hide', '');
       }
 
-      // ----- Revenue impact section -----
-      const cardsEl = $('#impact-cards');
-      const totalEl = $('#impact-total');
-      const totalValEl = $('#impact-total-value');
-      const allGreenEl = $('#all-green');
-
-      if (impacts.length === 0) {
-        cardsEl.innerHTML = '';
-        totalEl.setAttribute('data-hide', '');
-        allGreenEl.removeAttribute('data-hide');
-      } else {
-        allGreenEl.setAttribute('data-hide', '');
-        totalEl.removeAttribute('data-hide');
-        cardsEl.innerHTML = impacts.map(i => `
-          <div class="impact-card">
-            <div class="impact-headline">
-              If you improved your <strong>${i.metric}</strong> from ${i.from} to ${i.to}, here's the quarterly impact:
-            </div>
-            <div class="impact-stats">
-              <div class="impact-stat">
-                <span class="impact-stat-label">+ Meetings</span>
-                <span class="impact-stat-value">${fmtNum(i.held).toLocaleString()}</span>
-              </div>
-              <div class="impact-stat">
-                <span class="impact-stat-label">+ Opps</span>
-                <span class="impact-stat-value">${fmtNum(i.opps, 1).toLocaleString()}</span>
-              </div>
-              <div class="impact-stat">
-                <span class="impact-stat-label">+ Deals</span>
-                <span class="impact-stat-value">${fmtNum(i.deals, 1).toLocaleString()}</span>
-              </div>
-              <div class="impact-stat revenue">
-                <span class="impact-stat-label">+ Revenue</span>
-                <span class="impact-stat-value">${fmtMoney(i.revenue)}</span>
-              </div>
-            </div>
-          </div>
-        `).join('');
-        totalValEl.textContent = fmtMoney(totalRevGap);
-      }
+      // Reset total opportunity to empty state
+      updateTotalOpportunity();
 
       // ----- Transition to results screen -----
       screenForm.classList.add('fading');
@@ -1468,17 +1825,8 @@
         document.querySelector('.container').classList.add('wide');
         window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        // Animate gauges in
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            $$('.gauge').forEach(g => {
-              const pos = parseFloat(g.dataset.pos);
-              const marker = g.querySelector('.gauge-marker');
-              marker.style.left = pos + '%';
-              g.classList.add('animated');
-            });
-          }, 80);
-        });
+        // Wire up each slider
+        sliderRegistry.forEach(s => wireSlider(s.id));
 
         // Re-init HubSpot embed (script may have already loaded)
         if (window.hbspt && window.hbspt.meetings) {
