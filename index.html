@@ -859,7 +859,7 @@
     .total-opportunity-value {
       font-size: clamp(34px, 5.5vw, 52px);
       font-weight: 800;
-      color: var(--orange);
+      color: var(--red);
       letter-spacing: -0.03em;
       line-height: 1;
       margin-bottom: 12px;
@@ -1328,7 +1328,7 @@
 
             <!-- Total Revenue Opportunity (lives outside the card, but inside results-left) -->
             <div class="total-opportunity" id="total-opportunity">
-              <div class="total-opportunity-label">Your Total Revenue Opportunity (Per Quarter)</div>
+              <div class="total-opportunity-label">Your Total Missed Revenue Opportunity (Per Quarter)</div>
               <div class="total-opportunity-value" id="total-opportunity-value">$0</div>
               <div class="total-opportunity-stats" id="total-opportunity-stats">
                 <span class="total-opportunity-empty">Move any slider above your current value to see the impact.</span>
@@ -1831,6 +1831,12 @@
         const emToMeeting = sent > 0 ? (emBooked / sent) * 100 : 0;
 
         const hasPhoneShown = usePhone;
+
+        // Derived rates for email cascading math
+        const currentReplies = sent * (replyRate / 100);
+        const replyToOpenRatio = openRate > 0 ? (replyRate / openRate) : 0;
+        const replyToMeetingRate = currentReplies > 0 ? (emBooked / currentReplies) : 0;
+
         const emailConfigs = [
           {
             id: 'openRate',
@@ -1839,8 +1845,17 @@
             bench: BENCHMARKS.openRate,
             currentRate: openRate,
             max: 60,
-            informational: true,
-            showHint: !hasPhoneShown
+            showHint: !hasPhoneShown,
+            computeDelta(newRatePct) {
+              // More opens at same reply-to-open ratio = more replies = more meetings
+              const additionalReplies = sent * replyToOpenRatio * (newRatePct - openRate) / 100;
+              const addMeetings = additionalReplies * replyToMeetingRate;
+              const addHeld = addMeetings * EMAIL_ASSUMED_SHOW_RATE;
+              const addOpps = addHeld * oppRate;
+              const addPipeline = addOpps * acv;
+              const addRevenue = addOpps * winRate * acv;
+              return { meetings: addMeetings, held: addHeld, opps: addOpps, pipeline: addPipeline, revenue: addRevenue };
+            }
           },
           {
             id: 'replyRate',
@@ -1849,7 +1864,16 @@
             bench: BENCHMARKS.replyRate,
             currentRate: replyRate,
             max: 8,
-            informational: true
+            computeDelta(newRatePct) {
+              // More replies at same reply-to-meeting rate = more meetings
+              const additionalReplies = sent * (newRatePct - replyRate) / 100;
+              const addMeetings = additionalReplies * replyToMeetingRate;
+              const addHeld = addMeetings * EMAIL_ASSUMED_SHOW_RATE;
+              const addOpps = addHeld * oppRate;
+              const addPipeline = addOpps * acv;
+              const addRevenue = addOpps * winRate * acv;
+              return { meetings: addMeetings, held: addHeld, opps: addOpps, pipeline: addPipeline, revenue: addRevenue };
+            }
           },
           {
             id: 'emailToMeetingRate',
